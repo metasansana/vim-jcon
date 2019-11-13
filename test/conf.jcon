@@ -1,0 +1,71 @@
+
+include "./file-to-include"
+
+-- A comment if you will about the following line.
+number = 1
+
+boolean.true = true
+
+boolean.false = false
+
+envvar = ${PORT}
+
+string = "0.0.0.0"
+
+member.without.args = @client/app/lib/main#App
+
+member.with.args = @client/app/lib/main#app(1, ${PORT}, "0.0.0.0", 
+            [1,"2", ${THREE}], {one = 1, two="two", three=[3]})
+
+list.empty = []
+
+list.non.empty = [
+
+  1,
+
+  true,
+
+  false,
+
+  ${PORT},
+
+  "0.0.0.0",
+
+  @client/app/lib/main#App,
+
+  @client/app/lib/main#app(1, ${PORT}, "0.0.0.0", 
+            [1,"2", ${THREE}], {one = 1, two="two", three=[3]})
+
+]
+
+dict.empty = {}
+
+dict.non.empty = {
+
+  number = 1
+
+  envvar = ${PORT}
+
+  string = "0.0.0.0"
+
+  member.without.args = @client/app/lib/main#App
+
+  member.with.args = @client/app/lib/main#app (1, ${PORT}, "0.0.0.0", 
+            [1,"2", ${THREE}], {one = 1, two="two", three=[3]})
+
+  dict = {
+
+    number = 1
+
+    envvar = ${PORT|String}
+
+    string = "0.0.0.0"
+
+    member.without.args = @client/app/lib/main#App
+
+    member.with.args = @client/app/lib/main#app(1, ${PORT}, "0.0.0.0", 
+            [ 1, "2", ${THREE} ], {one = 1, two="two", three=[3]})
+
+  }
+
+}
