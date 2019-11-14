@@ -10,11 +10,13 @@ boolean.false = false
 
 envvar = ${PORT}
 
+ctxvar = $(__dirname)
+
 string = "0.0.0.0"
 
 member.without.args = @client/app/lib/main#App
 
-member.with.args = @client/app/lib/main#app(1, ${PORT}, "0.0.0.0", 
+member.with.args = @client/app/lib/main#app(1, ${PORT}, $(__dirname), "0.0.0.0", 
             [1,"2", ${THREE}], {one = 1, two="two", three=[3]})
 
 list.empty = []
@@ -28,6 +30,8 @@ list.non.empty = [
   false,
 
   ${PORT},
+
+  $(__dirname),
 
   "0.0.0.0",
 

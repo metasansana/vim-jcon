@@ -65,22 +65,28 @@ syntax match jconMember "\v[a-zA-Z_$][a-zA-Z_$-0-9]*"
 
 syntax region jconImport 
       \ matchgroup=jconModule 
-      \ start="\v[.$/a-zA-Z@][.$/0-9a-zA-Z-@_]*" 
+      \ start="\v[.$/a-zA-Z@][.$/0-9a-zA-Z-@_-]*" 
       \ matchgroup=jconHash 
       \ end="#"
       \ nextgroup=jconMember 
       \ skipwhite
       \ contained
 
-" Environment variables.
-syntax match jconEnvvarName "\v[a-zA-Z_][a-zA-Z_$-0-9]*" contained
+syntax match jconIdentifier "\v[a-zA-Z_][a-zA-Z_$0-9-]*" contained
 
-syntax region jconEnvvar start="${" end="}" contains=jconEnvvarName
+syntax region jconVariable 
+      \ start="\v\$\(" 
+      \ end=")"
+      \ contains=jconIdentifier
+      \ contained
+
+" Environment variables.
+syntax region jconEnvvar start="${" end="}" contains=jconIdentifier contained
 
 " This is the top level match for the syntax, though it can be found nested
 " in dicts too. Matchgroup is used to give color to the '=' sign.
 syntax region jconAssignment
-      \ start="\v[a-zA-Z_$][a-zA-Z_$-0-9]*" 
+      \ start="\v[a-zA-Z_$][a-zA-Z_$0-9-]*" 
       \ matchgroup=jconAssigner
       \ end="=" 
       \ contains=jconDot
@@ -90,7 +96,7 @@ syntax region jconAssignment
 
 " This groups the value syntax together so they can be re-used.
 syntax cluster jconValue 
-      \ contains=jconNumber,jconBoolean,jconString,jconEnvvar,
+      \ contains=jconNumber,jconBoolean,jconString,jconVariable,jconEnvvar,
       \ jconImport,jconArray,jconDict
 
 " Below actually does the higlighting.
@@ -101,7 +107,8 @@ highlight default link jconBoolean Boolean
 highlight default link jconNumber Number
 highlight default link jconString String
 highlight default link jconEnvvar Delimiter
-highlight default link jconEnvvarName Identifier
+highlight default link jconVariable Delimiter
+highlight default link jconIdentifier Identifier
 highlight default link jconArray Delimiter
 highlight default link jconDict Delimiter
 highlight default link jconComma Statement
