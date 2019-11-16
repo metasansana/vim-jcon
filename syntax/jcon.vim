@@ -25,13 +25,22 @@ syntax match jconDot "\v[.]" contained
 syntax match jconComment "\v--(.*)$"
 
 " Various supported number syntaxes.
-syntax match jconNumber "-\=\<\d[0-9_]*L\=\>" contained
-syntax match jconNumber "-\=\<0[xX][0-9a-fA-F][0-9a-fA-F_]*\>" contained
-syntax match jconNumber "-\=\<0[bB][01][01_]*\>" contained
-syntax match jconNumber "-\=\<0[oO]\o[0-7_]*\>" contained
+syntax match jconNumber 
+      \ "\v([-]?[-]?([0]|([1-9]([0-9]+)*))\.([0-9]+)*)|(\.[0-9]+)|([-]?([0]|[1-9]([0-9]+)*))" 
+      \ contained
 
-" Strings, only double quotes are supported.
-syntax region jconString start=/"/ skip=/\\"/ end=/"/ oneline
+" Strings, only double quotes are supported. 
+syntax region jconString 
+      \ start=/"/ 
+      \ skip=/\\"/ 
+      \ end=/"/
+      \ contains=jconUnicodeEscape,jconCharEscape,jconLineContinuation,
+      \ jconLineContinuationError
+
+syntax match jconUnicodeEscape "\v\\u[0-9a-fA-F]{4}" contained
+syntax match jconCharEscape "\v\\["\\bfnrtv]" contained 
+syntax match jconLineContinuation +\v[\\]\n[^"]*+ contained 
+syntax match jconLineContinuationError +\v\n[^"]*+ contained 
 
 " Dict (Record)
 " This is a region so any text between 'start' and 'end' will be higlighted.
@@ -106,9 +115,13 @@ highlight default link jconAssigner Operator
 highlight default link jconBoolean Boolean
 highlight default link jconNumber Number
 highlight default link jconString String
+highlight default link jconUnicodeEscape Delimiter
+highlight default link jconCharEscape Delimiter
+highlight default link jconLineContinuation String
+highlight default link jconLineContinuationError Error
 highlight default link jconEnvvar Delimiter
 highlight default link jconVariable Delimiter
-highlight default link jconIdentifier Identifier
+highlight default link jconIdentifier Macro
 highlight default link jconArray Delimiter
 highlight default link jconDict Delimiter
 highlight default link jconComma Statement

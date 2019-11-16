@@ -12,7 +12,10 @@ envvar = ${PORT}
 
 ctxvar = $(__dirname)
 
-string = "0.0.0.0"
+string = "0.0.0.0中a文\u2222 \n"
+
+multiline = "This is a \
+multiline string"
 
 member.without.args = @client/app/lib/main#App
 
